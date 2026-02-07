@@ -1,0 +1,22 @@
+{
+  "name": "OpenAICompat",
+  "display_name": "OpenAICompat",
+  "description": "Compatibility node for OpenAI-like APIs: accepts an image, a prompt, system prompt, and OpenAI-style parameters, and returns an enhanced prompt string.",
+  "author": "Auto-generated",
+  "version": "0.1.0",
+  "category": "OpenAICompat",
+  "inputs": [
+    {"name": "image", "type": "IMAGE", "required": true},
+    {"name": "prompt", "type": "STRING", "required": true},
+    {"name": "system_prompt", "type": "STRING", "required": false},
+    {"name": "openai_url", "type": "STRING", "required": false},
+    {"name": "api_key", "type": "STRING", "required": false},
+    {"name": "model", "type": "STRING", "required": false},
+    {"name": "resize_percent", "type": "FLOAT", "required": false},
+    {"name": "custom_properties", "type": "STRING", "required": false},
+    {"name": "resize", "type": "BOOLEAN", "required": false}
+  ],
+  "outputs": [
+    {"name": "ENHANCED_PROMPT", "type": "STRING"}
+  ]
+}
