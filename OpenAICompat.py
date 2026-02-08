@@ -16,12 +16,12 @@ class OpenAICompat:
                 "prompt": ("STRING", {"default": "", "multiline": True}),
                 "system_prompt": ("STRING", {"default": "", "multiline": True}),
                 "openai_url": ("STRING", {"default": "http://localhost:8080/v1/chat/completions"}),
-                # 'salted': True is the standard way to mark sensitive fields in ComfyUI
                 "api_key": ("STRING", {"default": "lm-studio", "salted": True}),
                 "model": ("STRING", {"default": "gpt-4o-mini"}),
                 "resize_percent": ("FLOAT", {"default": 30.0, "min": 1.0, "max": 100.0}),
                 "custom_properties": ("STRING", {"default": '{"temperature": 0.3}', "multiline": True}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 2**31-1}),
+                "bypass": (["disable", "enable"], {"default": "disable"}),
             }
         }
 
@@ -30,7 +30,11 @@ class OpenAICompat:
     FUNCTION = "process"
     CATEGORY = "OpenAICompat"
 
-    def process(self, image, prompt, system_prompt, openai_url, api_key, model, resize_percent=30.0, custom_properties="{}", seed=0):
+    def process(self, image, prompt, system_prompt, openai_url, api_key, model, resize_percent=30.0, custom_properties="{}", seed=0, bypass="disable"):
+
+        if bypass == "enable":
+            return (prompt,)
+
         # 1. Image Processing
         i = 255. * image[0].cpu().numpy()
         img_obj = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
@@ -67,7 +71,6 @@ class OpenAICompat:
                 result = result_json.get("choices", [{}])[0].get("message", {}).get("content", "").strip()
                 tokens = result_json.get('usage', {}).get('total_tokens', 'N/A')
 
-                # Stats printed to terminal only
                 print(f"\n[OpenAI-Stats] Time: {duration:.2f}s | Payload: {kb:.2f} Kb | Tokens: {tokens}")
 
                 return (result,)
