@@ -21,7 +21,7 @@ class OpenAICompat:
                 "resize_percent": ("FLOAT", {"default": 30.0, "min": 1.0, "max": 100.0}),
                 "custom_properties": ("STRING", {"default": '{"temperature": 0.3}', "multiline": True}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 2**31-1}),
-                "bypass": (["disable", "enable"], {"default": "disable"}),
+                "bypass": (["true", "false"], {"default": "false"}),
             }
         }
 
@@ -30,9 +30,9 @@ class OpenAICompat:
     FUNCTION = "process"
     CATEGORY = "OpenAICompat"
 
-    def process(self, image, prompt, system_prompt, openai_url, api_key, model, resize_percent=30.0, custom_properties="{}", seed=0, bypass="disable"):
+    def process(self, image, prompt, system_prompt, openai_url, api_key, model, resize_percent=30.0, custom_properties="{}", seed=0, bypass="false"):
 
-        if bypass == "enable":
+        if bypass == "true":
             return (prompt,)
 
         # 1. Image Processing
@@ -42,7 +42,7 @@ class OpenAICompat:
         if int(resize_percent) != 100:
             new_w = int(img_obj.width * resize_percent / 100)
             new_h = int(img_obj.height * resize_percent / 100)
-            img_obj = img_obj.resize((new_w, new_h), Image.LANCZOS)
+            img_obj = img_obj.resize((new_w, new_h), Image.Resampling.LANCZOS)
 
         buffered = io.BytesIO()
         img_obj.save(buffered, format="PNG")
