@@ -123,13 +123,9 @@ When you receive an image and a request, respond as follows:
 - numpy
 - Pillow
 
-## Installation
-1. Install dependencies:
-   ```bash
-   pip install requests torch numpy pillow
-   ```
-2. Download or clone this repository into your ComfyUI custom nodes folder.
-3. Restart ComfyUI.
+## Installation like any other custom node.
+1. Download or clone this repository into your ComfyUI custom nodes folder.
+2. Restart ComfyUI.
 
 ## Credits
 Developed by Francisco. Inspired by the integration of multimodal models and workflows for video generation.
